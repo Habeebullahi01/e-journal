@@ -80,20 +80,20 @@ func makeHandler(fn func(w http.ResponseWriter, r *http.Request, path []string))
 	return func(w http.ResponseWriter, r *http.Request) {
 		d := r.URL.Path
 		ds := strings.Split(d, "/")
-		ds = ds[2:]
-		// if validPath.MatchString(strings.Join(ds, "/")) {
+		if validPath.MatchString(strings.Join(ds, "/")) {
+			ds = ds[2:]
 
-		// 	fn(w, r, ds)
-		// } else {
-		// 	http.Error(w, "Path malformed", http.StatusNotFound)
-		// }
+			fn(w, r, ds)
+		} else {
+			http.Error(w, "Path malformed", http.StatusNotFound)
+		}
 		// fmt.Println(ds)
 		// m := validPath.FindStringSubmatch(r.URL.Path)
 		// if m == nil {
 		// 	http.NotFound(w, r)
 		// 	// log.Fatal("m is empty!")
 		// 	return
-		fn(w, r, ds)
+		// fn(w, r, ds)
 		// }
 	}
 }
